@@ -1,0 +1,20 @@
+---
+host_list:
+
+  - name: vIOS
+    platform: ios
+    mgmt: "192.168.10.122"
+    username: cisco
+    password: cisco
+
+  - name: ArubaCX
+    platform: aruba
+    mgmt: "192.168.10.142"
+    username: admin
+    password: aruba
+
+  - name: vEOS
+    platform: arista
+    mgmt: "192.168.10.151"
+    username: admin
+    password: arista

@@ -1,0 +1,20 @@
+---
+hostname: ArubaCX
+interfaces:
+  - name: 1/1/1
+    ip: 10.0.0.1/24
+    ospf:
+      process: 1
+      area: 0
+      passive: False
+  - name: loopback 0
+    ip: 192.168.1.1/24
+    ospf:
+      process: 1
+      area: 1
+ospf:
+  process: 1
+  router_id: 1.1.1.1
+  areas:
+    - 0
+    - 1

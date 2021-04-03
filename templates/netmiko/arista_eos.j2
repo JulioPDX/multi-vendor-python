@@ -1,0 +1,25 @@
+ip routing
+{% if data.ospf %}
+router ospf {{ data.ospf.process }}
+    router-id {{ data.ospf.router_id }}
+    passive-interface default
+{% for int in data.interfaces %}
+{% if int.ospf %}
+{% if int.ospf.passive == False %}
+    no passive-interface {{ int.name }}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% for int in data.interfaces %}
+{% if int.ospf %}
+interface {{ int.name }}
+{% if "back" not in int.name %}
+    no switchport
+    no shutdown
+{% endif%}
+    ip address {{ int.ip }}
+    ip ospf area {{ int.ospf.area }}
+{% endif %}
+{% endfor %}
+{% endif %}
+do wr
