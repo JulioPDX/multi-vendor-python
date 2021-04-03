@@ -28,17 +28,17 @@ def main():
         conn = driver(
             hostname=host["mgmt"], username=host["username"], password=host["password"]
         )
-        
+
         conn.open()
         facts = conn.get_facts()
         print(facts)
         print(f"\n{host['name']} model type: {facts['model']}")
-        
+
         # aoscx does not support config change in current napalm driver
         if host["platform"] != "aoscx":
             with open(f"vars/{host['name']}.yaml", "r") as handle:
                 ospf = safe_load(handle)
-            
+
             j2_env = Environment(
                 loader=FileSystemLoader("."), trim_blocks=True, autoescape=True
             )
@@ -46,11 +46,13 @@ def main():
             j2_env.globals["address"] = address
             j2_env.globals["mask"] = mask
 
-            template = j2_env.get_template(f"templates/basic/{host['platform']}_ospf.j2")
+            template = j2_env.get_template(
+                f"templates/basic/{host['platform']}_ospf.j2"
+            )
             new_ospf_config = template.render(data=ospf)
             print(f"\n[blue]Configuration to be loaded on {host['name']}:[/]\n")
             print(new_ospf_config)
-            
+
             conn.load_merge_candidate(config=new_ospf_config)
             diff = conn.compare_config()
             if diff:
@@ -60,7 +62,7 @@ def main():
                 print(f"[green]No diff on {host['name']}; config up to date[/]\n")
         else:
             print(f"\n[red]Feature not yet supported[/]\n")
-        
+
         conn.close()
         print("[green]Job complete[/]\n")
 
