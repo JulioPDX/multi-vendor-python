@@ -5,16 +5,16 @@ interfaces:
     ip: 10.0.0.2/24
     ospf:
       process: 1
-      area: 0
+      area: 0.0.0.0
       passive: False
   - name: Loopback0
     ip: 192.168.2.1/24
     ospf:
       process: 1
-      area: 1
+      area: 0.0.0.1
 ospf:
   process: 1
   router_id: 2.2.2.2
   area:
-    - 0
-    - 1
+    - 0.0.0.0
+    - 0.0.0.1

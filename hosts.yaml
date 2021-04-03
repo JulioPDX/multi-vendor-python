@@ -7,14 +7,14 @@ host_list:
     username: cisco
     password: cisco
 
-  - name: ArubaCX
-    platform: aruba
-    mgmt: "192.168.10.142"
-    username: admin
-    password: aruba
+  # - name: ArubaCX
+  #   platform: aoscx
+  #   mgmt: "192.168.10.142"
+  #   username: admin
+  #   password: aruba
 
-  - name: vEOS
-    platform: arista
-    mgmt: "192.168.10.151"
-    username: admin
-    password: arista
+  # - name: vEOS
+  #   platform: eos
+  #   mgmt: "192.168.10.151"
+  #   username: admin
+  #   password: arista

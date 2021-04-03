@@ -27,7 +27,7 @@ def main():
     print(host_root)
 
     # Set platform map to match netmiko
-    platform_map = {"ios": "cisco_ios", "arista": "arista_eos", "aruba": "hp_procurve"}
+    platform_map = {"ios": "cisco_ios", "eos": "arista_eos", "aoscx": "hp_procurve"}
 
     # Assigning platform variable to each host
     for host in host_root["host_list"]:
@@ -47,7 +47,8 @@ def main():
 
         template = j2_env.get_template(f"templates/netmiko/{platform}.j2")
         new_ospf_config = template.render(data=ospf)
-        print(f"\n{new_ospf_config}")
+        print(f"\n[blue]Configuration to be loaded on {host['name']}:[/]\n")
+        print(new_ospf_config)
 
         conn = Netmiko(
             host=host["mgmt"],
@@ -56,7 +57,7 @@ def main():
             device_type=platform,
         )
 
-        print(f"\n#### Logged into {conn.find_prompt()}, woohoo! ####")
+        print(f"\n[green]#### Logged into {conn.find_prompt()}, woohoo! ####[/]\n")
 
         result = conn.send_config_set(new_ospf_config.split("\n"))
 
