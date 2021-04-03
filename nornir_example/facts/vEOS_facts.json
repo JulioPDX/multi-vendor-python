@@ -1,0 +1,21 @@
+{
+  "hostname": "vEOS",
+  "fqdn": "vEOS",
+  "vendor": "Arista",
+  "model": "vEOS",
+  "serial_number": "",
+  "os_version": "4.24.0F-16276801.4240F",
+  "uptime": 83533,
+  "interface_list": [
+    "Ethernet1",
+    "Ethernet2",
+    "Ethernet3",
+    "Ethernet4",
+    "Ethernet5",
+    "Ethernet6",
+    "Ethernet7",
+    "Ethernet8",
+    "Loopback0",
+    "Management1"
+  ]
+}

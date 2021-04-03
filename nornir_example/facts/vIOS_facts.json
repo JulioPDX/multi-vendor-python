@@ -1,0 +1,16 @@
+{
+  "uptime": 71640,
+  "vendor": "Cisco",
+  "os_version": "IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.8(3)M2, RELEASE SOFTWARE (fc2)",
+  "serial_number": "9IZCLMBEFRM1XWURZBBOJ",
+  "model": "IOSv",
+  "hostname": "vIOS",
+  "fqdn": "vIOS.lab.com",
+  "interface_list": [
+    "GigabitEthernet0/0",
+    "GigabitEthernet0/1",
+    "GigabitEthernet0/2",
+    "GigabitEthernet0/3",
+    "Loopback0"
+  ]
+}

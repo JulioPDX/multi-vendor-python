@@ -1,0 +1,23 @@
+{
+  "GigabitEthernet0/0": {
+    "ipv4": {
+      "10.0.0.3": {
+        "prefix_length": 24
+      }
+    }
+  },
+  "GigabitEthernet0/3": {
+    "ipv4": {
+      "192.168.10.122": {
+        "prefix_length": 24
+      }
+    }
+  },
+  "Loopback0": {
+    "ipv4": {
+      "192.168.3.1": {
+        "prefix_length": 24
+      }
+    }
+  }
+}
