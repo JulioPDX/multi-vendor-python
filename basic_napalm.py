@@ -8,7 +8,7 @@ Course on Pluralsight.
 from napalm import get_network_driver
 from jinja2 import Environment, FileSystemLoader
 from yaml import safe_load
-from ospf_netmiko import address, mask
+from network_utils import address, mask
 from rich import print
 import urllib3
 

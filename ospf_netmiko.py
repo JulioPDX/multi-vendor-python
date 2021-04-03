@@ -4,19 +4,9 @@
 from yaml import safe_load
 from netmiko import Netmiko
 from jinja2 import Environment, FileSystemLoader
-from netaddr import IPNetwork
+from network_utils import address, mask
 from rich import print
 from rich.markup import escape
-
-# functions to be used in jinja templates for IP management
-def address(a):
-    a = str(IPNetwork(a).ip)
-    return a
-
-
-def mask(b):
-    b = str(IPNetwork(b).netmask)
-    return b
 
 
 def main():
