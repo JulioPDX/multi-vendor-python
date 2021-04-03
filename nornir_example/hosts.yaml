@@ -1,0 +1,72 @@
+---
+ArubaCX:
+  hostname: 192.168.10.142
+  groups:
+    - aoscx
+  data:
+    interfaces:
+      - name: 1/1/1
+        ip: 10.0.0.1/24
+        ospf:
+          process: 1
+          area: 0.0.0.0
+          passive: False
+      - name: loopback 0
+        ip: 192.168.1.1/24
+        ospf:
+          process: 1
+          area: 0.0.0.1
+    ospf:
+      process: 1
+      router_id: 1.1.1.1
+      areas:
+        - 0.0.0.0
+        - 0.0.0.1
+
+vEOS:
+  hostname: 192.168.10.151
+  groups:
+    - eos
+  data:
+    interfaces:
+      - name: Ethernet1
+        ip: 10.0.0.2/24
+        ospf:
+          process: 1
+          area: 0.0.0.0
+          passive: False
+      - name: Loopback0
+        ip: 192.168.2.1/24
+        ospf:
+          process: 1
+          area: 0.0.0.1
+    ospf:
+      process: 1
+      router_id: 2.2.2.2
+      area:
+        - 0.0.0.0
+        - 0.0.0.1
+
+vIOS:
+  hostname: 192.168.10.122
+  groups:
+    - ios
+  data:
+    interfaces:
+      - name: GigabitEthernet0/0
+        ip: 10.0.0.3/24
+        ospf:
+          process: 1
+          area: 0
+          passive: False
+      - name: Loopback0
+        ip: 192.168.3.1/24
+        ospf:
+          process: 1
+          area: 1
+    ospf:
+      process: 1
+      router_id: 3.3.3.3
+      area:
+        - 0
+        - 1
