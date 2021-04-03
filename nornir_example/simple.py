@@ -18,7 +18,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def main():
 
     nornir = InitNornir(config_file="config.yaml")
-    result = nornir.run(task=napalm_get, getters=["get_facts"])
+    result = nornir.run(name="GET FACTS", task=napalm_get, getters=["get_facts"])
 
     print_result(result)
 
