@@ -5,7 +5,8 @@ from yaml import safe_load
 from netmiko import Netmiko
 from jinja2 import Environment, FileSystemLoader
 from netaddr import IPNetwork
-from rich import print as pr
+from rich import print
+from rich.markup import escape
 
 # functions to be used in jinja templates for IP management
 def address(a):
@@ -23,7 +24,7 @@ def main():
     # Open hosts file as variable for future use
     with open("hosts.yaml", "r") as handle:
         host_root = safe_load(handle)
-    pr(host_root)
+    print(host_root)
 
     # Set platform map to match netmiko
     platform_map = {"ios": "cisco_ios", "arista": "arista_eos", "aruba": "hp_procurve"}
@@ -46,7 +47,7 @@ def main():
 
         template = j2_env.get_template(f"templates/netmiko/{platform}.j2")
         new_ospf_config = template.render(data=ospf)
-        pr(f"\n{new_ospf_config}")
+        print(f"\n{new_ospf_config}")
 
         conn = Netmiko(
             host=host["mgmt"],
@@ -55,11 +56,11 @@ def main():
             device_type=platform,
         )
 
-        pr(f"\n#### Logged into {conn.find_prompt()}, woohoo! ####")
+        print(f"\n#### Logged into {conn.find_prompt()}, woohoo! ####")
 
         result = conn.send_config_set(new_ospf_config.split("\n"))
 
-        print(result)
+        print(escape(result))
 
         with open(f"backups/{host['name']}.conf", "w") as writer:
             result = conn.send_command("show run")
