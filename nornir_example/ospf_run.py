@@ -19,13 +19,13 @@ def deploy_ospf(task):
     # Task 1, Gathering facts
     task1_result = task.run(task=napalm_get, getters=["get_facts"])
     model = task1_result[0].result["get_facts"]["model"]
-    print(f"[green]{task.host.name}: connected as model type {model}[/]")
 
     # Task 2, sending same command on all devices
     task2_result = task.run(
         task=netmiko_send_command, command_string="show ip interface brief"
     )
     cmd_output = task2_result[0].result
+    print(f"\n\n[green]{task.host.name}: connected as model type {model}[/]\n")
     print(cmd_output)
 
     # Task 3, Create configurations from templates
