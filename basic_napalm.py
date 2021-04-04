@@ -45,32 +45,37 @@ def main():
             # https://www.kite.com/python/answers/how-to-call-a-function-in-a-jinja2-template-in-python
             j2_env.globals["address"] = address
             j2_env.globals["mask"] = mask
-
             template = j2_env.get_template(
                 f"templates/basic/{host['platform']}_ospf.j2"
             )
             new_ospf_config = template.render(data=ospf)
+
             print(f"\n[blue]Configuration to be loaded on {host['name']}:[/]\n")
             print(new_ospf_config)
 
             conn.load_merge_candidate(config=new_ospf_config)
             diff = conn.compare_config()
+
             if diff:
                 print(f"\n[red]The following diff was found on {host['name']}[/]\n")
                 print(diff)
             else:
                 print(f"[green]No diff on {host['name']}; config up to date[/]\n")
-            
+
             # NAPALM backup config option
+            print(f"\nSaving backup for {host['name']} ...")
+
             with open(f"napalm_backups/{host['name']}.conf", "w") as writer:
                 backup = conn.get_config("running")
                 writer.writelines(backup["running"])
-            
+
+            print(f"\nBackup saved for {host['name']}")
+
         else:
             print(f"\n[red]Feature not yet supported[/]\n")
 
         conn.close()
-        print("[green]Job complete[/]\n")
+        print("\n[green]Job complete[/]\n")
 
 
 if __name__ == "__main__":
