@@ -3,7 +3,7 @@
 import logging
 from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_get, napalm_configure
-from nornir_netmiko.tasks import netmiko_send_command
+from nornir_netmiko.tasks import netmiko_send_command, netmiko_send_config
 from nornir_jinja2.plugins.tasks import template_file
 from nornir_utils.plugins.functions import print_result
 from network_utils import address, mask
@@ -53,20 +53,22 @@ def deploy_ospf(task):
     # print(f"\n{ospf_config}")
 
     # Task 4, Configure devices using NAPALM
-    if task.host.platform != "aoscx":
+    if task.host.platform == "aoscx":
         task4_result = task.run(
-            name=f"{task.host.name}: Configuring with NAPALM",
-            task=napalm_configure,
-            configuration=ospf_config,
+            name=f"{task.host.name}: Configuring with Netmiko",
+            task=netmiko_send_config,
+            config_commands=ospf_config.split("\n"),
         )
     #     if task4_result[0].diff:
     #         print(f"\n[red]{task.host.name}: diff below\n{task4_result[0].diff}[/]\n")
     #     else:
     #         print(f"\n[green]{task.host.name}: no diff, configuration in sync![/]\n")
-    # else:
-    #     print(
-    #         f"\n[red]NAPALM configure is not supported on {task.host.platform} ... [/]\n"
-    #     )
+    else:
+        task4_result = task.run(
+            name=f"{task.host.name}: Configuring with NAPALM",
+            task=napalm_configure,
+            configuration=ospf_config,
+        )
 
 
 def main():
