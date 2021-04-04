@@ -53,7 +53,7 @@ def main():
 
         print(escape(result))
 
-        # with open(f"backups/{host['name']}.conf", "w") as writer:
+        # with open(f"netmiko_backups/{host['name']}.conf", "w") as writer:
         #     result = conn.send_command("show run")
         #     writer.writelines(result)
 

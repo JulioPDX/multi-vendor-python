@@ -60,6 +60,12 @@ def main():
                 print(diff)
             else:
                 print(f"[green]No diff on {host['name']}; config up to date[/]\n")
+            
+            # NAPALM backup config option
+            with open(f"napalm_backups/{host['name']}.conf", "w") as writer:
+                backup = conn.get_config("running")
+                writer.writelines(backup["running"])
+            
         else:
             print(f"\n[red]Feature not yet supported[/]\n")
 
