@@ -2,28 +2,52 @@
 
 import logging
 from nornir import InitNornir
-from nornir_napalm.plugins.tasks import napalm_get, napalm_cli, napalm_configure
+from nornir_napalm.plugins.tasks import napalm_get, napalm_configure
 from nornir_netmiko.tasks import netmiko_send_command
 from nornir_jinja2.plugins.tasks import template_file
 from nornir_utils.plugins.functions import print_result
+from network_utils import address, mask
 from rich import print
-from netaddr import IPNetwork
 import urllib3
 
 # Disable warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# functions to be used in jinja templates for IP management
-def address(a):
-    a = str(IPNetwork(a).ip)
-    return a
 
+def deploy_ospf(task):
 
-def mask(b):
-    b = str(IPNetwork(b).netmask)
-    return b
+    # Task 1, Gathering facts
+    task1_result = task.run(task=napalm_get, getters=["get_facts"])
+    model = task1_result[0].result["get_facts"]["model"]
+    print(f"[green]{task.host.name}: connected as model type {model}[/]")
+
+    # Task 2, sending same command on all devices
+    task2_result = task.run(
+        task=netmiko_send_command, command_string="show ip interface brief"
+    )
+    cmd_output = task2_result[0].result
+    print(cmd_output)
+
+    # Task 3, Create configurations from templates
+    # task2_result = task.run(
+    #     task=template_file,
+    #     template=f"{task.host.platform}_ios.j2",
+    #     path="templates/",
+    #     data=
+    # )
 
 
 def main():
-    
-    
+
+    nornir = InitNornir(config_file="config.yaml")
+    print("Nornir initialized with the following hosts:\n")
+    for host in nornir.inventory.hosts.keys():
+        print(f"{host}\n")
+
+    result = nornir.run(task=deploy_ospf)
+
+    print_result(result, severity_level=logging.WARNING)
+
+
+if __name__ == "__main__":
+    main()

@@ -3,6 +3,9 @@ ArubaCX:
   hostname: 192.168.10.142
   groups:
     - aoscx
+  connection_options:
+      netmiko:
+          platform: hp_procurve
   data:
     interfaces:
       - name: 1/1/1
