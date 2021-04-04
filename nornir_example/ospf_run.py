@@ -20,7 +20,11 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def deploy_ospf(task):
 
     # Task 1, Gathering facts
-    task1_result = task.run(name=f"{task.host.name}: Gathering Facts",task=napalm_get, getters=["get_facts"])
+    task1_result = task.run(
+        name=f"{task.host.name}: Gathering Facts",
+        task=napalm_get,
+        getters=["get_facts"],
+    )
     model = task1_result[0].result["get_facts"]["model"]
     # print(model)
 
@@ -50,7 +54,11 @@ def deploy_ospf(task):
 
     # Task 4, Configure devices using NAPALM
     if task.host.platform != "aoscx":
-        task4_result = task.run(name=f"{task.host.name}: Configuring with NAPALM",task=napalm_configure, configuration=ospf_config)
+        task4_result = task.run(
+            name=f"{task.host.name}: Configuring with NAPALM",
+            task=napalm_configure,
+            configuration=ospf_config,
+        )
     #     if task4_result[0].diff:
     #         print(f"\n[red]{task.host.name}: diff below\n{task4_result[0].diff}[/]\n")
     #     else:

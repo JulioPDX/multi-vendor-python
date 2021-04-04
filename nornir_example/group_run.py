@@ -29,13 +29,18 @@ def write_facts(task):
         filename=f"facts/{task.host.name}_facts.json",
     )
 
-    task2_result = task.run(name="GET Interface IP Addresses!", task=napalm_get, getters=["get_interfaces_ip"])
+    task2_result = task.run(
+        name="GET Interface IP Addresses!",
+        task=napalm_get,
+        getters=["get_interfaces_ip"],
+    )
 
     task.run(
         task=write_file,
         content=json.dumps(task2_result[0].result["get_interfaces_ip"], indent=2),
         filename=f"facts/{task.host.name}_interfaces_ip.json",
     )
+
 
 def main():
 
