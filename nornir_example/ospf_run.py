@@ -16,27 +16,49 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # If running into ArubaCX sessions full error,
 # run the following at the CLI "https-server session close all"
 
+
 def deploy_ospf(task):
 
     # Task 1, Gathering facts
-    task1_result = task.run(task=napalm_get, getters=["get_facts"])
+    task1_result = task.run(name=f"{task.host.name}: Gathering Facts",task=napalm_get, getters=["get_facts"])
     model = task1_result[0].result["get_facts"]["model"]
+    # print(model)
 
     # Task 2, sending same command on all devices
     task2_result = task.run(
-        task=netmiko_send_command, command_string="show ip interface brief"
+        name=f"{task.host.name}: show ip interface brief",
+        task=netmiko_send_command,
+        command_string="show ip interface brief",
     )
     cmd_output = task2_result[0].result
-    print(f"\n\n[green]{task.host.name}: connected as model type {model}[/]\n")
-    print(cmd_output)
+    # print(f"\n\n[green]{task.host.name}: connected as model type {model}[/]\n")
+    # print(cmd_output)
+    # print(task.host.data)
 
     # Task 3, Create configurations from templates
-    # task2_result = task.run(
-    #     task=template_file,
-    #     template=f"{task.host.platform}_ios.j2",
-    #     path="templates/",
-    #     data=
-    # )
+    task3_result = task.run(
+        name=f"{task.host.name}: Creating Configuration",
+        task=template_file,
+        template=f"{task.host.platform}_ospf.j2",
+        path="templates/",
+        data=task.host.data,
+        address=address,
+        mask=mask,
+    )
+    ospf_config = task3_result[0].result
+    # print(f"\n{ospf_config}")
+
+    # Task 4, Configure devices using NAPALM
+    if task.host.platform != "aoscx":
+        task4_result = task.run(name=f"{task.host.name}: Configuring with NAPALM",task=napalm_configure, configuration=ospf_config)
+    #     if task4_result[0].diff:
+    #         print(f"\n[red]{task.host.name}: diff below\n{task4_result[0].diff}[/]\n")
+    #     else:
+    #         print(f"\n[green]{task.host.name}: no diff, configuration in sync![/]\n")
+    # else:
+    #     print(
+    #         f"\n[red]NAPALM configure is not supported on {task.host.platform} ... [/]\n"
+    #     )
 
 
 def main():
@@ -48,7 +70,7 @@ def main():
 
     result = nornir.run(task=deploy_ospf)
 
-    print_result(result, severity_level=logging.WARNING)
+    print_result(result)
 
 
 if __name__ == "__main__":

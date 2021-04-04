@@ -5,7 +5,7 @@ router ospf {{ data.ospf.process }}
     passive-interface default
 {% for int in data.interfaces %}
 {% if int.ospf %}
-{% if int.ospf.passive == False %}
+{% if int.ospf.passive is defined and int.ospf.passive == False %}
     no passive-interface {{ int.name }}
 {% endif %}
 {% endif %}

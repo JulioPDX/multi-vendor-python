@@ -13,7 +13,7 @@ interface {{ int.name }}
 {% endif%}
     ip address {{ int.ip }}
     ip ospf {{ int.ospf.process }} area {{ int.ospf.area }}
-{% if int.ospf.passive == False %}
+{% if int.ospf.passive is defined and int.ospf.passive == False %}
     no ip ospf passive
 {% endif %}
 {% endif %}
