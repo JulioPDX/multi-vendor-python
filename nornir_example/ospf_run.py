@@ -13,6 +13,8 @@ import urllib3
 # Disable warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+# If running into ArubaCX sessions full error,
+# run the following at the CLI "https-server session close all"
 
 def deploy_ospf(task):
 
