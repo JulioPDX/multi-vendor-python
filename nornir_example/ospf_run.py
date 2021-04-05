@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 
-import logging
+"""
+Script used for OSPF deployment using Nornir
+"""
+
 from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_get, napalm_configure
 from nornir_netmiko.tasks import netmiko_send_command, netmiko_send_config
 from nornir_jinja2.plugins.tasks import template_file
 from nornir_utils.plugins.functions import print_result
-from network_utils import address, mask
 from rich import print
 import urllib3
+from network_utils import address, mask
+
 
 # Disable warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -19,13 +23,17 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def deploy_ospf(task):
 
+    """
+    Main function built for OSPF deployment tasks
+    """
+
     # Task 1, Gathering facts
     task1_result = task.run(
         name=f"{task.host.name}: Gathering Facts",
         task=napalm_get,
         getters=["get_facts"],
     )
-    model = task1_result[0].result["get_facts"]["model"]
+    # model = task1_result[0].result["get_facts"]["model"]
     # print(model)
 
     # Task 2, sending same command on all devices
@@ -34,7 +42,7 @@ def deploy_ospf(task):
         task=netmiko_send_command,
         command_string="show ip interface brief",
     )
-    cmd_output = task2_result[0].result
+    # cmd_output = task2_result[0].result
     # print(f"\n\n[green]{task.host.name}: connected as model type {model}[/]\n")
     # print(cmd_output)
     # print(task.host.data)
@@ -72,6 +80,10 @@ def deploy_ospf(task):
 
 
 def main():
+
+    """
+    Main function that calls deploy_ospf function
+    """
 
     nornir = InitNornir(config_file="config.yaml")
     print("Nornir initialized with the following hosts:\n")

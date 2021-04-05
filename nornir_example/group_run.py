@@ -10,7 +10,6 @@ from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_get
 from nornir_utils.plugins.tasks.files import write_file
 from nornir_utils.plugins.functions import print_result
-from rich import print
 import urllib3
 
 # Disable warnings
@@ -18,6 +17,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def write_facts(task):
+
+    """
+    Funtion used for writing device facts to file
+    """
 
     # Task 1, Gather facts using NAPALM to get model
     task1_result = task.run(name="GET FACTS!", task=napalm_get, getters=["get_facts"])
@@ -43,6 +46,10 @@ def write_facts(task):
 
 
 def main():
+
+    """
+    Main execution
+    """
 
     nornir = InitNornir(config_file="config.yaml")
     result = nornir.run(task=write_facts)
