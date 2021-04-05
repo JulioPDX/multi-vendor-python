@@ -1,15 +1,22 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
+
+"""
+Script used for OSPF deployment using Netmiko
+"""
 
 # Import requirements
 from yaml import safe_load
 from netmiko import Netmiko
 from jinja2 import Environment, FileSystemLoader
-from network_utils import address, mask
 from rich import print
 from rich.markup import escape
+from network_utils import address, mask
 
 
 def main():
+    """
+    Main execution
+    """
 
     # Open hosts file as variable for future use
     with open("hosts.yaml", "r") as handle:
