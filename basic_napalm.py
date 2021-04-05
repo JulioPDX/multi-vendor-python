@@ -1,4 +1,4 @@
-#! /usr/bin/env Python
+#!/usr/bin/env python
 
 """
 Source from Nick Russo Automating Networks with Python 
@@ -8,15 +8,18 @@ Course on Pluralsight.
 from napalm import get_network_driver
 from jinja2 import Environment, FileSystemLoader
 from yaml import safe_load
-from network_utils import address, mask
 from rich import print
 import urllib3
+from network_utils import address, mask
 
 # Disable warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def main():
+    """
+    Main execution of program
+    """
 
     with open("hosts.yaml", "r") as handle:
         host_root = safe_load(handle)
@@ -72,7 +75,7 @@ def main():
             print(f"\nBackup saved for {host['name']}")
 
         else:
-            print(f"\n[red]Feature not yet supported[/]\n")
+            print("\n[red]Feature not yet supported[/]\n")
 
         conn.close()
         print("\n[green]Job complete[/]\n")
