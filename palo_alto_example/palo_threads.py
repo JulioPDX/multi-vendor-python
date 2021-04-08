@@ -54,7 +54,7 @@ def deviceconnector(num_thread, queue):
 
 def main():
     """
-    Mail function that compiles the thread launcher and manages the queue
+    Mainn function that compiles the thread launcher and manages the queue
     """
 
     # Setting up threads based on number set above
