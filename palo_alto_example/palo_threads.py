@@ -29,10 +29,8 @@ def deviceconnector(num_thread, queue):
     """
 
     # This while loop runs indefinitely and grabs IP addresses from the queue and processes them
-    # Loop will stop and restart if "ip = q.get()" is empty
+    # Loop will stop and restart if "ip_address = queue.get()" is empty
     while True:
-        # These print statements are largely for the user indicating where the process is at
-        # and aren't required
         ip_address = queue.get()
         print(f"{num_thread}: Acquired IP: {ip_address}")
         try:
